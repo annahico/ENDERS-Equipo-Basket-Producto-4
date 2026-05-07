@@ -141,3 +141,17 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Firebase credentials
+google-services.json
+google-services.plist
+.env
+firebase-debug.log
+
+# Expo
+.expo/
+dist/
+
+# Angular
+/angular/dist/
+/angular/.angular/
