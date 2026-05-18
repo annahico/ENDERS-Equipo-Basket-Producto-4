@@ -28,12 +28,18 @@ export class NotificationsService {
     }
 
     try {
-      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      const registration = await navigator.serviceWorker.ready;
       const messaging = getMessaging(this.app);
       const token = await getToken(messaging, {
         vapidKey: environment.firebaseVapidKey,
         serviceWorkerRegistration: registration,
       });
+
+      if (!token) {
+        console.log('Firebase no ha devuelto token FCM para este navegador.');
+        return null;
+      }
 
       console.log('Token FCM navegador:', token);
       return token;
