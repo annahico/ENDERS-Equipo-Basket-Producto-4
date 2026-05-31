@@ -1,0 +1,187 @@
+<div class="player-overlay">
+    <div class="player-detail">
+        <button class="close-btn" (click)="close()" aria-label="Cerrar detalle del jugador">✕</button>
+
+        <div class="card shadow-lg detail-card">
+            <div class="row g-0 align-items-center">
+
+                <!-- Foto / datos -->
+                <div class="col-12 col-md-4 text-center player-photo">
+                    <div class="player-photo-panel">
+
+                        @if (!isEditing) {
+                            <p class="player-tag">Jugador</p>
+                            <h3 class="player-name">{{player?.nombre}} {{player?.apellidos}}</h3>
+                            <img [src]="player?.foto" class="detail-img img-fluid m-3">
+
+                            <div class="player-stats">
+                                <p class="player-stat">
+                                    <strong>Posición</strong>
+                                    <span>{{player?.posicion}}</span>
+                                </p>
+                                <p class="player-stat">
+                                    <strong>Edad</strong>
+                                    <span>{{player?.edad}} años</span>
+                                </p>
+                                <p class="player-stat">
+                                    <strong>Altura</strong>
+                                    <span>{{player?.altura}} m</span>
+                                </p>
+                            </div>
+                        }
+
+                        @if (isEditing) {
+                            <p class="player-tag">Editando jugador</p>
+
+                            <input
+                                class="form-control mb-2"
+                                type="text"
+                                [(ngModel)]="editablePlayer.nombre"
+                                placeholder="Nombre"
+                            >
+
+                            <input
+                                class="form-control mb-2"
+                                type="text"
+                                [(ngModel)]="editablePlayer.apellidos"
+                                placeholder="Apellidos"
+                            >
+
+                            <input
+                                class="form-control mb-2"
+                                type="text"
+                                [(ngModel)]="editablePlayer.posicion"
+                                placeholder="Posición"
+                            >
+
+                            <input
+                                class="form-control mb-2"
+                                type="number"
+                                [(ngModel)]="editablePlayer.edad"
+                                placeholder="Edad"
+                            >
+
+                            <input
+                                class="form-control mb-2"
+                                type="number"
+                                step="0.01"
+                                [(ngModel)]="editablePlayer.altura"
+                                placeholder="Altura"
+                            >
+
+                            <input
+                                class="form-control mb-3"
+                                type="text"
+                                [(ngModel)]="editablePlayer.foto"
+                                placeholder="Ruta de la foto"
+                            >
+
+                            <img [src]="editablePlayer.foto" class="detail-img img-fluid m-3">
+
+                            <div class="player-stats">
+                                <p class="player-stat">
+                                    <strong>Posición</strong>
+                                    <span>{{editablePlayer.posicion}}</span>
+                                </p>
+                                <p class="player-stat">
+                                    <strong>Edad</strong>
+                                    <span>{{editablePlayer.edad}} años</span>
+                                </p>
+                                <p class="player-stat">
+                                    <strong>Altura</strong>
+                                    <span>{{editablePlayer.altura}} m</span>
+                                </p>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+                <!-- Información y vídeo -->
+                <div class="col-12 col-md-8">
+                    <div class="card-body detail-body">
+
+                        <div class="d-flex gap-2 mb-3">
+                            @if (!isEditing) {
+                                <button class="btn btn-warning" (click)="startEdit()">
+                                    Editar
+                                </button>
+                            }
+
+                            @if (isEditing) {
+                                <button class="btn btn-success" (click)="saveEdit()">
+                                    Guardar
+                                </button>
+                                <button class="btn btn-secondary" (click)="cancelEdit()">
+                                    Cancelar
+                                </button>
+                            }
+                        </div>
+
+                        @if (!isEditing) {
+                            <div class="media-header">
+                                <p class="media-kicker">Highlights</p>
+                                <h4 class="media-title">Vídeos del jugador</h4>
+                            </div>
+
+                            @if (player?.videos?.length) {
+                                <div class="video-carousel">
+                                    @if (hasMultipleVideos() && currentVideoIndex > 0) {
+                                        <button
+                                            class="video-btn left"
+                                            (click)="prevVideo()">
+                                            ◀
+                                        </button>
+                                    }
+
+                                    <div class="carousel-window">
+                                        <div class="carousel-current">
+                                            <app-media-component
+                                                [video]="player?.videos?.[currentVideoIndex]">
+                                            </app-media-component>
+                                        </div>
+                                    </div>
+
+                                    @if (hasMultipleVideos() && currentVideoIndex < (player?.videos?.length ?? 0) - 1) {
+                                        <button
+                                            class="video-btn right"
+                                            (click)="nextVideo()">
+                                            ▶
+                                        </button>
+                                    }
+                                </div>
+                            }
+                        }
+
+                        @if (isEditing) {
+                            <div class="media-header">
+                                <p class="media-kicker">Edición</p>
+                                <h4 class="media-title">Vídeos del jugador</h4>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-light">Vídeo 1</label>
+                                <input
+                                    class="form-control mb-2"
+                                    type="text"
+                                    [(ngModel)]="editablePlayer.videos[0]"
+                                    placeholder="Ruta del vídeo 1"
+                                >
+
+                                <label class="form-label text-light">Vídeo 2</label>
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    [(ngModel)]="editablePlayer.videos[1]"
+                                    placeholder="Ruta del vídeo 2"
+                                >
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

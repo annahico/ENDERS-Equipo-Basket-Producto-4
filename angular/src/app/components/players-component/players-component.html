@@ -1,0 +1,147 @@
+<div class="container players-section">
+
+    <div class="players-header d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title m-0">Plantilla del equipo Enders</h2>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-success" (click)="toggleFormulario()">
+                Nuevo jugador
+            </button>
+
+            <button class="btn btn-outline-light" (click)="showFilters = !showFilters">
+                Filtros
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="mostrarFormulario" class="card p-3 mb-3">
+        <input
+            class="form-control mb-2"
+            placeholder="Nombre"
+            [(ngModel)]="nuevoJugador.nombre"
+        >
+
+        <input
+            class="form-control mb-2"
+            placeholder="Apellidos"
+            [(ngModel)]="nuevoJugador.apellidos"
+        >
+
+        <input
+            class="form-control mb-2"
+            placeholder="Posición"
+            [(ngModel)]="nuevoJugador.posicion"
+        >
+
+        <input
+            type="number"
+            class="form-control mb-2"
+            placeholder="Edad"
+            [(ngModel)]="nuevoJugador.edad"
+        >
+
+        <input
+            type="number"
+            class="form-control mb-2"
+            placeholder="Altura"
+            [(ngModel)]="nuevoJugador.altura"
+        >
+
+        <input
+            class="form-control mb-2"
+            placeholder="Foto URL"
+            [(ngModel)]="nuevoJugador.foto"
+        >
+
+        <input
+            class="form-control mb-2"
+            placeholder="Video URL"
+            [(ngModel)]="videoInput"
+        >
+
+        <button class="btn btn-primary mt-2" (click)="addPlayer()">
+            Guardar jugador
+        </button>
+    </div>
+
+    <div *ngIf="showFilters" class="card p-3 filter-panel">
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Buscar jugador"
+                    [(ngModel)]="searchText"
+                    (input)="applyFilters()"
+                >
+            </div>
+
+            <div class="col-12 col-md-4">
+                <select
+                    class="form-select"
+                    [(ngModel)]="positionFilter"
+                    (change)="applyFilters()"
+                >
+                    <option value="">Todas las posiciones</option>
+                    <option value="Base">Base</option>
+                    <option value="Escolta">Escolta</option>
+                    <option value="Alero">Alero</option>
+                    <option value="Ala-Pivot">Ala-Pivot</option>
+                    <option value="Pivot">Pivot</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Edad máxima"
+                    [(ngModel)]="ageFilter"
+                    (input)="applyFilters()"
+                >
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 players-grid">
+        <div
+            class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 player-card-entry"
+            *ngFor="let player of filteredPlayers"
+        >
+            <div
+                class="card h-100 text-center shadow-sm player-card"
+                (click)="selectPlayer(player)"
+            >
+                <img
+                    [src]="player.foto"
+                    class="card-img-top"
+                    alt="foto jugador"
+                >
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ player.nombre }} {{ player.apellidos }}</h5>
+
+                    <p class="card-text mb-1">
+                        <strong>Posición:</strong> {{ player.posicion }}
+                    </p>
+
+                    <p class="card-text mb-1">
+                        <strong>Edad:</strong> {{ player.edad }} años
+                    </p>
+
+                    <p class="card-text mb-1">
+                        <strong>Altura:</strong> {{ player.altura }} m
+                    </p>
+
+                    <button
+                        class="btn btn-danger btn-sm mt-2"
+                        (click)="deletePlayer(player.id!); $event.stopPropagation()"
+                    >
+                        Borrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
